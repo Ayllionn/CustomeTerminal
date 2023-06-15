@@ -1,0 +1,3 @@
+"""dans la même idée que tout le reste vous pouvez faire un dossier avec plusieur fichier python. le nom du fichier serra le nom de la commande qui pourra être appellé et la fonction start de se fichier serra la fonction qui en serra associé"""
+
+term.get_raw_cmds_files("chemin d'accès au dossier contenant les fichiers") #ça ajoutera automatiquement les fonction start de tout les fichier.py du dossier
