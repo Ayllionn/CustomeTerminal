@@ -11,7 +11,7 @@ def calc_cmd(operateur, a, b): #mettez les différent argument que votre fonctio
     operateur : + ou - ou / ou * ou * etc...
     a : 1er nombre
     b : 2eme nombre""" #il est important de mettre exactement le nom de vos argument ici pour que l'utilisateur puisse utilisé le terminal de façons plus poussé
-    print(f"{a}{operateur}{b}" + " = " + calc(f"{a}{operateur}{b}"))
+    print(f"{a}{operateur}{b}" + " = " + eval(f"{a}{operateur}{b}"))
 
 term = CustomTerminal() #création d'une instance du terminal
 # option dispo 'terminal_name permet de donné un nom a votre terminal, search soit 'o' ou 'n' pour oui ou non. cette option permet de savoir que si une commande est
