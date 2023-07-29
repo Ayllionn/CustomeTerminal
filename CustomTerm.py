@@ -152,7 +152,17 @@ class CustomTerminal:
         for file_path in files:
             file_name = file_path.split("\\")[-1][:-3]
 
-            module = importlib.import_module("commandes." + file_name)
+            compte = 0
+            for d, a in zip(file_path, os.getcwd()):
+                if d == a:
+                    compte += 1
+                else:
+                    break
+
+            module_acces = ".".join(file_path[compte+1:].split('\\'))
+            module_acces = module_acces[:-3]
+
+            module = importlib.import_module(module_acces)
             start_func = getattr(module, "start", None)
 
             if start_func and callable(start_func):
