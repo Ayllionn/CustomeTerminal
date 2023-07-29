@@ -2,7 +2,7 @@
 ### Description :
 Une simple librairie pour gagné du temps dans les applications en terminal
 
-###Prérequis :
+### Prérequis :
 La lib `rich`
 
 ## Ordre des lecture pour comprendre :
