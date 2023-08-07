@@ -15,7 +15,7 @@ class CommandNotFound(Exception):
     pass
 
 class CustomTerminal:
-    def __init__(self, terminal_name="Terminal by Ayllionne", search=None, panel=True, **kwargs):
+    def __init__(self, terminal_name="Terminal by Ayllionne", search=None, panel=True, help_at_start=True, **kwargs):
         if search is None:
             search = Prompt.ask(
                 "Voulez-vous que les commandes non trouvées soient demandées au système d'exploitation ?",
@@ -35,6 +35,8 @@ class CustomTerminal:
         self.panel = panel
         for cle, value in kwargs.items():
             self.add_command(value, cle)
+
+        self.help_at_start = help_at_start
 
     def _help_msg(self, command=None):
         """Affiche le message d'aide du terminal ou la documentation d'une commande souhaitée"""
@@ -69,6 +71,22 @@ class CustomTerminal:
             self._default_cmds[name] = fonction
         self._commands[name] = fonction
 
+    def command(self, _name=None, default_cmd=False):
+        """
+        pour passer avec une méthode en décorateur
+        """
+        def deco(func):
+            if _name is None:
+                name = func.__name__
+            else:
+                name = _name
+            if name in self._commands:
+                raise ValueError(f"La commande '{name}' existe déjà")
+            if default_cmd:
+                self._default_cmds[name] = func
+            self._commands[name] = func
+        return deco
+
     def _para(self, o_n=None):
         """Permet de changer les paramètres entrés au lancement du terminal
         :arg : n/o"""
@@ -86,6 +104,10 @@ class CustomTerminal:
         if self.panel is True:
             panel = Panel("", title="Terminale Perso", subtitle="[black]by Ayllionne")
             console.print(panel)
+
+        if self.help_at_start:
+            self._help_msg()
+
         while self._true:
             cmd = console.input(self._message)
             cmd_args = shlex.split(cmd)
@@ -147,10 +169,10 @@ class CustomTerminal:
         if reset:
             self.reset()
 
-        files = glob(f"{directory}\\*.py")
+        files = glob(f"{directory}/*.py")
 
         for file_path in files:
-            file_name = file_path.split("\\")[-1][:-3]
+            file_name = file_path.split("\\")[-1].split("/")[-1][:-3]
 
             compte = 0
             for d, a in zip(file_path, os.getcwd()):
@@ -159,7 +181,7 @@ class CustomTerminal:
                 else:
                     break
 
-            module_acces = ".".join(file_path[compte+1:].split('\\'))
+            module_acces = ".".join(file_path[compte+1:].split('\\')).replace("/", ".")
             module_acces = module_acces[:-3]
 
             module = importlib.import_module(module_acces)
